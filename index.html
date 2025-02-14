@@ -71,41 +71,59 @@
         <form id="contactForm">
             <input type="text" id="name" placeholder="Your Name" required>
             <input type="text" id="text" placeholder="Class" required>
-            <textarea id="message" placeholder="Your Winner" required></textarea>
-            <button type="submit">Submit</button>
+            <textarea id="message" placeholder="Your Winner(Department)" required></textarea>
+            <button id="submitButton" type="submit">Submit</button>
+            <p id="submittedMessage" class="success-message">You have already submitted your response.</p>
         </form>
     </div>
     
     <script>
         let form = document.getElementById("contactForm");
+        let submitButton = document.getElementById("submitButton");
+        let submittedMessage = document.getElementById("submittedMessage");
 
-        form.addEventListener("submit", function(e) {
-    e.preventDefault(); 
+        // Check if the user has already submitted
+        if (localStorage.getItem("formSubmitted") === "true") {
+            submitButton.disabled = true;
+            submitButton.innerText = "Submitted";
+            submittedMessage.style.display = "block"; // Show message
+        }
 
-    let name = document.getElementById("name").value;
-    let text = document.getElementById("text").value;
-    let message = document.getElementById("message").value;
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); 
 
-    let googleformurl = "https://docs.google.com/forms/d/e/1FAIpQLSfjR5QETsA6q-zfsGw9xPj-IIGsxQFqqg5OfgICNGdscgkseA/formResponse";
-    const formData = new FormData();
-    
-    formData.append("entry.1207272706", name);  
-    formData.append("entry.2096345071", text); 
-    formData.append("entry.609083475", message);
+            // If already submitted, do nothing
+            if (localStorage.getItem("formSubmitted") === "true") {
+                return;
+            }
+            let name = document.getElementById("name").value;
+            let text = document.getElementById("text").value;
+            let message = document.getElementById("message").value;
 
-    fetch(googleformurl, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData
-    }).then(() => {
-        alert("Your response has been submitted!"); 
-        form.reset(); 
-    }).catch(error => {
-        alert("Error submitting form: " + error);
-    });
-});
+            let googleformurl = "https://docs.google.com/forms/d/e/1FAIpQLSfjR5QETsA6q-zfsGw9xPj-IIGsxQFqqg5OfgICNGdscgkseA/formResponse";
+            const formData = new FormData();
 
+            formData.append("entry.1207272706", name);
+            formData.append("entry.2096345071", text);
+            formData.append("entry.609083475", message);
+
+            fetch(googleformurl, {
+                method: "POST",
+                mode: "no-cors",
+                body: formData
+            }).then(() => {
+                alert("Your response has been submitted!");
+                localStorage.setItem("formSubmitted", "true");
+                submitButton.disabled = true;
+                submitButton.innerText = "Submitted";
+                submittedMessage.style.display = "block";
+                form.reset();
+            }).catch(error => {
+                alert("Error submitting form: " + error);
+                submitButton.disabled = false;
+                submitButton.innerText = "Submit";
+            });
+        });
     </script>
-    
 </body>
 </html>
