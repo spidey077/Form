@@ -80,7 +80,7 @@
         let form = document.getElementById("contactForm");
 
         form.addEventListener("submit", function(e) {
-    e.preventDefault(); // Prevents normal form submission
+    e.preventDefault(); 
 
     let name = document.getElementById("name").value;
     let text = document.getElementById("text").value;
@@ -89,17 +89,17 @@
     let googleformurl = "https://docs.google.com/forms/d/e/1FAIpQLSfjR5QETsA6q-zfsGw9xPj-IIGsxQFqqg5OfgICNGdscgkseA/formResponse";
     const formData = new FormData();
     
-    formData.append("entry.1207272706", name);  // Name field (corrected)
-    formData.append("entry.2096345071", text); // Email field (corrected)
-    formData.append("entry.609083475", message); // Message field (corrected)
+    formData.append("entry.1207272706", name);  
+    formData.append("entry.2096345071", text); 
+    formData.append("entry.609083475", message);
 
     fetch(googleformurl, {
         method: "POST",
         mode: "no-cors",
         body: formData
     }).then(() => {
-        alert("Your response has been submitted!"); // Notify user
-        form.reset(); // Clear form after submission
+        alert("Your response has been submitted!"); 
+        form.reset(); 
     }).catch(error => {
         alert("Error submitting form: " + error);
     });
