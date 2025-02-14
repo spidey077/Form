@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form with Google Forms Integration</title>
+    <style>
+       * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        .form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        input:focus, textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0px 0px 10px rgba(102, 126, 234, 0.3);
+            outline: none;
+        }
+        button {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>FUTSAL WINNER PREDICTION</h2>
+        <form id="contactForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="text" id="text" placeholder="Class" required>
+            <textarea id="message" placeholder="Your Winner" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    
+    <script>
+        let form = document.getElementById("contactForm");
+
+        form.addEventListener("submit", function(e) {
+    e.preventDefault(); // Prevents normal form submission
+
+    let name = document.getElementById("name").value;
+    let text = document.getElementById("text").value;
+    let message = document.getElementById("message").value;
+
+    let googleformurl = "https://docs.google.com/forms/d/e/1FAIpQLSfjR5QETsA6q-zfsGw9xPj-IIGsxQFqqg5OfgICNGdscgkseA/formResponse";
+    const formData = new FormData();
+    
+    formData.append("entry.1207272706", name);  // Name field (corrected)
+    formData.append("entry.2096345071", text); // Email field (corrected)
+    formData.append("entry.609083475", message); // Message field (corrected)
+
+    fetch(googleformurl, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+    }).then(() => {
+        alert("Your response has been submitted!"); // Notify user
+        form.reset(); // Clear form after submission
+    }).catch(error => {
+        alert("Error submitting form: " + error);
+    });
+});
+
+    </script>
+    
+</body>
+</html>
